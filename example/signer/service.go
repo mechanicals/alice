@@ -14,6 +14,7 @@
 package signer
 
 import (
+	"encoding/hex"
 	"io/ioutil"
 
 	"github.com/getamis/alice/crypto/homo/paillier"
@@ -51,6 +52,12 @@ func NewService(config *SignerConfig, pm types.PeerManager) (*service, error) {
 	paillier, err := paillier.NewPaillier(2048)
 	if err != nil {
 		log.Warn("Cannot create a paillier function", "err", err)
+		return nil, err
+	}
+
+	msg, err := hex.DecodeString(config.Message)
+	if err != nil {
+		log.Warn("Cannot create message", "err", err)
 		return nil, err
 	}
 
